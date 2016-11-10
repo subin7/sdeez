@@ -11,7 +11,7 @@ var os = require('os');
 var Deezer = require('node-deezer-api');
 var mkdirp = require('mkdirp');
 var config = require('./config');
-var PORT = parseArg('--port') || parseArg('-p') || process.env.PORT || 80;
+var PORT = process.env.PORT || 80;
 var initialized = false;
 
 initFolders();
