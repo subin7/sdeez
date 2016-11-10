@@ -11,22 +11,22 @@ var os = require('os');
 var Deezer = require('node-deezer-api');
 var mkdirp = require('mkdirp');
 var config = require('./config');
-
+var PORT = parseArg('--port') || parseArg('-p') || process.env.PORT || 80;
 var initialized = false;
 
 initFolders();
 
 // Route and Create server
 app.use( '/', express.static( __dirname + '/www/') );
-server.listen(config.port);
-console.log('Server is running @ localhost:' + config.port);
+server.listen(PORT);
+console.log('Server is running @ localhost:' + PORT);
 
 if(os.platform() == 'win32') {
-	require('child_process').exec("start http://localhost:" + config.port);
+	require('child_process').exec("start http://localhost:" + PORT);
 } else if(os.platform() == 'darwin') {
-	require('child_process').exec("open http://localhost:" + config.port);
+	require('child_process').exec("open http://localhost:" + PORT);
 } else {
-	console.log("Open http://localhost:" + config.port + " in your browser");
+	console.log("Open http://localhost:" + PORT + " in your browser");
 }
 
 var tryInit = setInterval(function() { 
