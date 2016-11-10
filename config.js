@@ -1,5 +1,5 @@
 var config = {
-	port: 80,
+	port: 34888,
 	version: 203,
 	sys: 'win'
 }
