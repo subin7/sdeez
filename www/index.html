@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/materialize.min.css"/>
+	<link rel="stylesheet" type="text/css" href="css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="css/animate.css">
+	<link rel=icon href="img/icon.png" type="image/png">
+	<title>Deezloader</title>
+</head>
+<body>
+
+<!--****************************************************************************************************-->
+<!--*****************************************INITIALIZING-SCREEN****************************************-->
+<!--****************************************************************************************************-->
+<div id="initializing" class="center indigo">
+	<h1 class="white-text">Initializing...</h1>
+	<div class="preloader-wrapper big active">
+		<div class="spinner-layer">
+			<div class="circle-clipper left">
+				<div class="circle"></div>
+			</div>
+			<div class="gap-patch">
+				<div class="circle"></div>
+			</div>
+			<div class="circle-clipper right">
+				<div class="circle"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--****************************************************************************************************-->
+<!--***********************************************MODALS***********************************************-->
+<!--****************************************************************************************************-->
+
+<!--###########################################MODAL_SETTINGS###########################################-->
+<div id="modal_settings" class="modal modal-fixed-footer">
+	<div class="modal-content">
+		<div class="row">
+			<h4 class="col s12">Settings</h4>
+		</div>
+		<div class="row">
+			<div class="input-field col s12">
+				<i class="material-icons prefix">label</i>
+				<input type="text" id="modal_settings_input_trackNameTemplate"/>
+				<label for="modal_settings_input_trackNameTemplate">Track names</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-field col s12">
+				<i class="material-icons prefix">label</i>
+				<input type="text" id="modal_settings_input_playlistTrackNameTemplate"/>
+				<label for="modal_settings_input_playlistTrackNameTemplate">Playlist-Track names</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-field col s12">
+				<i class="material-icons prefix">place</i>
+				<input type="text" id="modal_settings_input_path"/>
+				<label for="modal_settings_input_path">Path (Leave empty for standard path /mp3)</label>
+			</div>
+		</div>
+		<div class="row center">
+			<div class="col s4">
+				<input type="checkbox" id="modal_settings_cbox_createM3UFile" class="filled-in"/>
+				<label for="modal_settings_cbox_createM3UFile">Create M3U (Playlist) file</label>
+			</div>
+			<div class="col s4">
+				<input type="checkbox" id="modal_settings_cbox_createArtistFolder" class="filled-in"/>
+				<label for="modal_settings_cbox_createArtistFolder">Create artist folder</label>
+			</div>
+			<div class="col s4">
+				<input type="checkbox" id="modal_settings_cbox_createAlbumFolder" class="filled-in"/>
+				<label for="modal_settings_cbox_createAlbumFolder">Create album folder</label>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="modal-close waves-effect waves-light btn" id="modal_settings_btn_saveSettings"><i
+				class="material-icons right">save</i>Save</a>
+		<a href="#" class="waves-effect btn-flat" id="modal_settings_btn_defaultSettings"><i
+				class="material-icons right">settings_backup_restore</i>Default Settings</a>
+		<a href="#" class="modal-close waves-effect btn-flat">Close</a>
+	</div>
+</div>
+
+<!--############################################MODAL_UPDATE############################################-->
+<div id="modal_update" class="modal">
+	<div class="modal-content">
+		<div class="row">
+			<h4 class="col s12">Update</h4>
+		</div>
+		<div id="modal_update_loadingIndicator" class="row center">
+			<div class="preloader-wrapper big active">
+				<div class="spinner-layer">
+					<div class="circle-clipper left">
+						<div class="circle"></div>
+					</div>
+					<div class="gap-patch">
+						<div class="circle"></div>
+					</div>
+					<div class="circle-clipper right">
+						<div class="circle"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<p id="modal_update_message" class="col s12 hide">
+			</p>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#" target="_blank" class="btn waves-effect waves-light animated fadeInDown hide"
+		   id="modal_update_btn_downloadUpdate"><i class="material-icons right">file_download</i>Download new
+			version</a>
+		<a href="#" class="modal-close waves-effect btn-flat">Close</a>
+	</div>
+</div>
+
+<!--#############################################MODAL_ABOUT############################################-->
+<div id="modal_about" class="modal modal-fixed-footer">
+	<div class="modal-content">
+		<div class="row">
+			<h4 class="col s12">More</h4>
+		</div>
+		<div class="row">
+			<ul class="collapsible col s12" data-collapsible="accordion">
+				<li>
+					<div class="collapsible-header waves-effect"><i class="material-icons">info</i>About</div>
+					<div class="collapsible-body">
+						<p>
+							<b>Deezloader</b><br/>
+							<b>Version:</b> 2.0.3<br/>
+							<b>Programer:</b> <a href="https://boerse.to/members/zzmtv.3378614/">ZzMTV</a><br/>
+							<b>Interface:</b> <a
+								href="https://boerse.to/members/id640509-040147.3211963/">ID640509-040147</a>
+							using <a
+								href="http://materializecss.com/">materialize</a>. Material Design icons by <a
+								href="https://design.google.com/icons/">Google</a>.<br/>
+							<b>©2015-2016.</b>
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="collapsible-header waves-effect"><i class="material-icons">help</i>Help</div>
+					<div class="collapsible-body">
+						<p>
+							If you have any questions, feel free to ask at the <a
+								href="https://boerse.to/thema/spotify-downloader-lieder-und-playlisten-von-spotify-runterladen-deezer.2114717/">thread
+							at Boerse.to</a>!
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="collapsible-header waves-effect"><i class="material-icons">feedback</i>Feedback</div>
+					<div class="collapsible-body">
+						<p>
+							Do you have some feedback or want to ask for some new features? Feel free to comment at the
+							<a
+									href="https://boerse.to/thema/spotify-downloader-lieder-und-playlisten-von-spotify-runterladen-deezer.2114717/">thread
+								at Boerse.to</a>!
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="collapsible-header waves-effect"><i class="material-icons">bug_report</i>Bugs</div>
+					<div class="collapsible-body">
+						<p>
+							If you experience any bugs, please message the <a
+								href="https://boerse.to/members/zzmtv.3378614/">author</a>! Thank you! :)
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="collapsible-header waves-effect"><i class="material-icons">warning</i>Attention!</div>
+					<div class="collapsible-body">
+						<p>
+							The authors don't call to commit crimes.<br/>
+							The usage of this tool may be illegal in your country! Please inform yourself.<br/>
+							The authors give no guarantee at all and aren't responsible for damages of all kinds!
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="collapsible-header waves-effect"><i class="material-icons"><i
+							class="material-icons">history</i></i>Changelog
+						(English only)
+					</div>
+					<div class="collapsible-body">
+						<p>
+							<b>Version 2.0.3</b><br />
+							- FIX: Problem with remixes of songs<br/>
+							- FIX: Settings reset when browser closed<br/>
+							- NEW: Tracklist; See the tracks of a album, artist or playlist when searching<br/>
+							- CHANGE: recoded parts of internal code for better performance<br/><br/>
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="collapsible-header waves-effect"><i class="material-icons"><i
+							class="material-icons">history</i></i>Changelog
+						(German only)
+					</div>
+					<div class="collapsible-body">
+						<p>
+							<b>Version 2.0.3</b><br />
+							- FIX: Problem mit Song Remixen<br/>
+							- FIX: Einstellungen wurden nicht richtig abgespeichert<br/>
+							- Neu: Tracklisten werden bei der Suche nach Alben und Playlisten angezeigt<br/>
+							- CHANGE: Bessere Performance<br/><br/>
+							<b>Version 2.0.2</b><br/>
+							- Suche erweitert (Suche nach Song, Album, Artist oder Playlist)<br/>
+							- Fehler bei Pfadangabe behoben<br/><br/>
+							<b>Version 2.0.1</b><br/>
+							- Fehler behoben, dass die Seite neu geladen wird, wenn eine Suche gestartet wird.<br/><br/>
+							<b>Version 2.0.0</b><br/>
+							- Komplett neues Material Design<br/>
+							- Deezer Charts hinzugefügt<br/>
+							- Suche verbessert (Informationen zu Song-Dauer + Cover)<br/>
+							- Anzeige für den Downloadfortschritt hinzugefügt<br/>
+							- Downloads können abgebrochen werden<br/>
+							- Mehrere Fehler behoben<br/><br/>
+							<b>Version 1.0.4</b><br/>
+							- Unterstützung von Künstler-Links -> Alle Alben eines Künstlers downloaden<br/><br/>
+							<b>Version 1.0.3</b><br/>
+							- Update Fenster eingebaut<br/>
+							- Bildergröße auf 800x800px erhöht + Probleme mit dem HTTPS Zertifikat des Deezer CDN's
+							behoben<br/>
+							- Fehler behoben, wodurch der Download bei manchen Liedern fehlgeschlagen ist, obwohl sie im
+							Web
+							Player anhörbar sind<br/><br/>
+							<b>Version 1.0.2</b><br/>
+							- OS X und Linux hinzugefügt (Anleitung: hier )Ordner für Interpret/Album anlegbar (Nur bei
+							einzelnen Tracks)<br/>
+							- Eigenen Pfad setzen<br/><br/>
+							<b>Version 1.0.1</b><br/>
+							- Sonderzeichen bleiben in den ID3-Tags bestehen<br/>
+							- Folgende ID3-Tags hinzugefügt: Jahr, Tracknummer (Relativ zum Album)<br/>
+							- Größere Bilder (500px)
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="collapsible-header waves-effect"><i class="material-icons">copyright</i>Lincense</div>
+					<div class="collapsible-body">
+						<p>
+							<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+								<img alt="Creative Commons License" style="border-width:0"
+									 src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/>
+							</a><br/>
+							This work by <a href="https://boerse.to/members/zzmtv.3378614/">ZzMTV</a> and <a
+								href="https://boerse.to/members/id640509-040147.3211963/">ID640509-040147</a> is
+							licensed
+							under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
+							Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+						</p>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="modal-close waves-effect btn-flat">Close</a>
+	</div>
+</div>
+
+<!--##########################################MODAL_TRACKLIST###########################################-->
+<div id="modal_trackList" class="modal modal-fixed-footer">
+	<div class="modal-content">
+		<div class="row">
+			<h4 class="col s12">Tracklist</h4>
+		</div>
+		<div class="row">
+			<table class="highlight col s12">
+				<thead>
+				<tr>
+					<td>#</td>
+					<td>Song</td>
+					<td>Artist</td>
+					<td><i class="material-icons">timer</i></td>
+				</tr>
+				</thead>
+				<tbody id="modal_trackList_table_trackList_tbody_loadingIndicator" class="hide">
+				<tr>
+					<td class="center" colspan="4">
+						<div class="preloader-wrapper big active">
+							<div class="spinner-layer">
+								<div class="circle-clipper left">
+									<div class="circle"></div>
+								</div>
+								<div class="gap-patch">
+									<div class="circle"></div>
+								</div>
+								<div class="circle-clipper right">
+									<div class="circle"></div>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				</tbody>
+				<tbody id="modal_trackList_table_trackList_tbody_trackList" class="hide">
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="modal-close waves-effect btn-flat">Close</a>
+	</div>
+</div>
+
+<!--##########################################MODAL_MSG###########################################-->
+<div id="modal_msg" class="modal">
+	<div class="modal-content">
+		<div class="row">
+			<h4 class="col s12" id="modal_msg_title"></h4>
+		</div>
+		<div class="row">
+			<p class="col s12" id="modal_msg_message"></p>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="modal-close waves-effect waves-light btn">I got it!</a>
+	</div>
+</div>
+
+<!--****************************************************************************************************-->
+<!--********************************************MAIN-CONTENT********************************************-->
+<!--****************************************************************************************************-->
+<header>
+	<nav class="indigo" role="navigation">
+		<div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Deezloader</a>
+			<ul class="right hide-on-med-and-down">
+				<li><a href="#modal_settings" id="nav_btn_openSettingsModal"
+					   class="waves-effect waves-light modal-trigger"><i
+						class="material-icons left">settings</i>Settings</a>
+				</li>
+				<li><a href="#modal_update" id="nav_btn_openUpdateModal"
+					   class="waves-effect waves-light modal-trigger"><i
+						class="material-icons left">autorenew</i>Update<span
+						id="nav_btn_openUpdateModal_updateBadge"
+						class="new badge animated fadeIn hide">1</span></a>
+				</li>
+				<li><a href="#modal_about" class="waves-effect waves-light modal-trigger"><i
+						class="material-icons left">more_horiz</i>More</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+</header>
+<main class="container">
+	<div class="row">
+		<h1 class="header col s12 center grey-text text-darken-4">Welcome to Deezloader</h1>
+	</div>
+	<div class="row">
+		<h5 class="header col s12 center" style="color: #727272">A tool to download songs, albums and playlists from
+			Deezer</h5>
+	</div>
+	<div class="row">
+		<div class="col s12 tab-wrapper">
+			<ul class="tabs">
+				<li class="tab col s3 waves-effect"><a href="#tab_search">Search</a></li>
+				<li class="tab col s3 waves-effect"><a href="#tab_charts">Charts</a></li>
+				<li class="tab col s3 waves-effect"><a href="#tab_url">Download from URL</a></li>
+				<li class="tab col s3 waves-effect"><a href="#tab_downloads">Downloads</a></li>
+			</ul>
+		</div>
+		<div id="tab_search">
+			<form id="tab_search_form_search" class="row">
+				<div class="row">
+					<input type="text" id="tab_search_form_search_input_searchString" class="col s10"
+						   placeholder="Search for something..."/>
+					<button class="waves-effect waves-light btn col s2"><i
+							class="material-icons right">search</i>Search
+					</button>
+				</div>
+				<div class="row">
+					<div class="col s3 center">
+						<input name="searchMode" type="radio" class="with-gap"
+							   id="tab_search_radio_searchMode_song" value="track" checked/>
+						<label for="tab_search_radio_searchMode_song">Song</label>
+					</div>
+					<div class="col s3 center">
+						<input name="searchMode" type="radio" class="with-gap"
+							   id="tab_search_radio_searchMode_album" value="album"/>
+						<label for="tab_search_radio_searchMode_album">Album</label>
+					</div>
+					<div class="col s3 center">
+						<input name="searchMode" type="radio" class="with-gap"
+							   id="tab_search_radio_searchMode_artist" value="artist"/>
+						<label for="tab_search_radio_searchMode_artist">Artist</label>
+					</div>
+					<div class="col s3 center">
+						<input name="searchMode" type="radio" class="with-gap"
+							   id="tab_search_radio_searchMode_playlist" value="playlist"/>
+						<label for="tab_search_radio_searchMode_playlist">Playlist</label>
+					</div>
+				</div>
+			</form>
+			<div class="row" id="tab_search_results">
+				<div id="tab_search_results_searchProgressIndicator" class="row center hide">
+
+				</div>
+				<table id="tab_search_table_results" class="highlight col s12">
+					<thead>
+					<tr class="animated fadeInUp hide" id="tab_search_table_results_thead_track">
+						<td><!--cover--></td>
+						<td>Song</td>
+						<td>Artist</td>
+						<td>Album</td>
+						<td><i class="material-icons">timer</i></td>
+						<td><!--download_link--></td>
+					</tr>
+					<tr class="animated fadeInUp hide" id="tab_search_table_results_thead_album">
+						<td><!--cover--></td>
+						<td>Album</td>
+						<td>Artist</td>
+						<td>Songs</td>
+						<td><!--download_link--></td>
+					</tr>
+					<tr class="animated fadeInUp hide" id="tab_search_table_results_thead_artist">
+						<td><!--cover--></td>
+						<td>Artist</td>
+						<td>Albums</td>
+						<td><!--download_link--></td>
+					</tr>
+					<tr class="animated fadeInUp hide" id="tab_search_table_results_thead_playlist">
+						<td><!--cover--></td>
+						<td>Name</td>
+						<td>Songs</td>
+						<td><!--download_link--></td>
+					</tr>
+					</thead>
+					<tbody id="tab_search_table_results_tbody_loadingIndicator" class="hide">
+					<tr>
+						<td class="center">
+							<div class="preloader-wrapper big active">
+								<div class="spinner-layer">
+									<div class="circle-clipper left">
+										<div class="circle"></div>
+									</div>
+									<div class="gap-patch">
+										<div class="circle"></div>
+									</div>
+									<div class="circle-clipper right">
+										<div class="circle"></div>
+									</div>
+								</div>
+							</div>
+						</td>
+					</tr>
+					</tbody>
+					<tbody id="tab_search_table_results_tbody_results">
+					</tbody>
+					<tbody id="tab_search_table_results_tbody_noResults" class="animated fadeInUp hide">
+					<tr>
+						<td class="center">Nothing found!</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div id="tab_charts">
+			<div class="row">
+				<div class="input-field col s12">
+					<select id="tab_charts_select_country" class="icons">
+						<!--All country selects have to be like the following example:
+						<option value="example" data-icon="images/sample.jpg" class="left circle">Example</option>
+						-->
+					</select>
+					<label>Country</label>
+				</div>
+			</div>
+			<table id="tab_charts_table_charts" class="highlight row">
+				<thead>
+				<tr>
+					<td>#</td>
+					<td><!--cover--></td>
+					<td>Song</td>
+					<td>Artist</td>
+					<td>Album</td>
+					<td><i class="material-icons">timer</i></td>
+					<td><!--download_link--></td>
+				</tr>
+				</thead>
+				<tbody id="tab_charts_table_charts_tbody_loadingIndicator">
+				<tr>
+					<td colspan="7" class="center">
+						<div class="preloader-wrapper big active">
+							<div class="spinner-layer">
+								<div class="circle-clipper left">
+									<div class="circle"></div>
+								</div>
+								<div class="gap-patch">
+									<div class="circle"></div>
+								</div>
+								<div class="circle-clipper right">
+									<div class="circle"></div>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				</tbody>
+				<tbody id="tab_charts_table_charts_tbody_charts">
+				</tbody>
+			</table>
+		</div>
+		<div id="tab_url">
+			<form id="tab_url_form_url" class="row">
+				<input type="text" id="song_url" class="col s10" placeholder="Song/Playlist/Album/Artist URL"/>
+				<button class="btn waves-effect waves-light col s2"><i
+						class="material-icons right">file_download</i>Download
+				</button>
+			</form>
+		</div>
+		<div id="tab_downloads">
+			<div class="row">
+				<button id="clearTracksTable" class="btn waves-effect waves-light col s12">
+					<i class="material-icons right">clear_all</i>clear list
+				</button>
+			</div>
+			<table id="tab_downloads_table_downloads" class="row">
+				<thead>
+				<tr>
+					<td>Name</td>
+					<td>Size</td>
+					<td>Downloaded</td>
+					<td>Failed</td>
+					<td style="width: 25%;"><!--progress--></td>
+					<td><!--event buttons--></td>
+				</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</main>
+<div class="fixed-action-btn" id="btn_scrollToTop" style="bottom: 45px; right: 24px;">
+	<a class="btn-floating btn-large tooltipped" data-position="top" data-delay="50" data-tooltip="Scroll to top">
+		<i class="large material-icons">keyboard_arrow_up</i>
+	</a>
+</div>
+<footer class="page-footer">
+	<div class="container">
+		<div class="row">
+			<div class="col l6 s12">
+				<h5 class="white-text">Deezloader</h5>
+				<p class="grey-text text-lighten-4">This tool can download songs, albums and playlist from Deezer
+					in high quality(320kb/s)!</p>
+			</div>
+			<div class="col l6 s12">
+				<h5 class="white-text">Links</h5>
+				<ul>
+					<li><a class="white-text"
+						   href="https://boerse.to/thema/deezloader-download-music-from-deezer-spotify-downloader.2114717/">Deezloader
+						Thread</a></li>
+					<li><a class="white-text" href="https://boerse.to/">Boerse.to</a></li>
+					<li><a class="white-text" href="https://boerse.to/members/zzmtv.3378614/">ZzMTV - programer of
+						the
+						tool</a></li>
+					<li><a class="white-text" href="https://boerse.to/members/id640509-040147.3211963/">ID640509-040147
+						- interface</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="footer-copyright">
+		<div class="container">
+			©2015-2016 Deezloader by <a href="https://boerse.to/members/zzmtv.3378614/">ZzMTV</a>.
+			Interface by <a href="https://boerse.to/members/id640509-040147.3211963/">ID640509-040147</a> using <a
+				href="http://materializecss.com/">materialize</a>.
+		</div>
+	</div>
+</footer>
+
+<script type="text/javascript" src="js/jquery-2.2.1.min.js"></script>
+<script type="text/javascript" src="js/materialize.min.js"></script>
+<script type="text/javascript" src="js/js.cookie.js"></script>
+<script type="text/javascript" src="index.js"></script>
+
+</body>
+</html>
